@@ -1,0 +1,21 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "description": "A small Tetris-inspired browser game built with TypeScript and webpack.",
+  "main": "./src/main.ts",
+   "source": "./dist/index.html",
+   "scripts": {
+    "start": "webpack serve --mode development",
+    "develop": "webpack serve --mode development",
+    "build" : "webpack --mode production"
+  },
+  "author": "Raed Gharzeddine",
+  "license": "MIT",
+  "devDependencies": {
+    "ts-loader": "^9.5.7",
+    "typescript": "^6.0.3",
+    "webpack": "^5.106.2",
+    "webpack-cli": "^7.0.2",
+    "webpack-dev-server": "^5.2.3"
+  }
+}

@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Blocks For Fun</title>
+        <link href="style.css" rel="stylesheet">
+        <link rel="shortcut icon" href="./images/sapphire.ico" />
+        <script src="https://kit.fontawesome.com/3fa57ce71f.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <img id="sapphire" src="./images/sapphire.png" hidden/>                  
+        <dialog id="aboutDialog">
+            <form method="dialog">
+                <h2>Blocks For Fun - Version : 0.01</h2>
+                <br>
+                <p>
+                    I developed this game for fun. It is inspired by the original falling-block puzzle format.
+                    The source code for this project is available under the MIT License.
+                    <p>
+                        Note! I used <a href="https://fontawesome.com/">fontawesome</a>, and two arcade sounds from <a href="https://pixabay.com/">pixabay</a>.
+                        The sapphire Icon is from <a href="https://icons8.com/">Icon8</a>
+                        The background image is from <a href="https://www.pexels.com/photo/gray-wall-with-rows-of-bricks-7078687/">Pexels by Laura Tancredi.</a>
+                         Finally, the <a href="https://thecodelearners.com/how-to-create-a-beep-sound-in-javascript-with-snippets-and-examples/#:~:text=A%20simple%20and%20straight%20forward%20way%20to%20trigger,play%20%28%29%20a%20method%20which%20plays%20beep%20sound.">beep sound</a> is from a sample on thecodelearners.com
+                    </p>
+                    <p>
+                        Third-party assets and services keep their original licenses or attribution requirements.
+                    </p>
+                    <p>
+                        The game works well on all modern browsers.  
+                    </p>
+                </p>
+    
+                <p>
+                    This game is developed by <a href="https://www.linkedin.com/in/raed-gharzeddine/">Raed Gharzeddine</a>
+                    <p>Feel free to contact me on Linkedin.</p>
+                </p>
+    
+                <divs style="display: flex; align-items: center;justify-content: center;">
+                    <button id="okBtn" value="Ok">OK</button>
+                </div>
+            </form>
+        </dialog>
+
+        <audio id="victoerySound">
+            <source src="./sounds/victory.mp3" type="audio/mpeg" />
+        </audio>
+        <audio id="gameOverSound">
+            <source src="./sounds/gameover.mp3" type="audio/mpeg" />
+        </audio>
+
+        <dialog id="newGameDialog">
+            <form method="dialog">
+                <p>
+                    Would you like to end this game and start a new one?
+                </p>
+                <div style="display: flex; align-items: center;justify-content: center;">
+                    <button id="noBtn" value="No" style="margin: 10px;">No</button>
+                    <button id="yesBtn" value="Yes" style="margin: 10px;">Yes</button>
+                </div>
+            </form>
+        </dialog>
+        <div id="root">
+            <h1>Blocks For Fun</h1>
+            <div id="top_container" >
+                <div id="left_container" class="canavs-container">
+                    <canvas id="game_canvas"></canvas>
+                </div>
+
+                <div id="right_container">
+                    <div id="game_info">
+               
+                        <div class="canavs-container">
+                            <div>Next Piece</div>
+                            <div>
+                                <canvas id="next_piece_canvas"></canvas>
+                            </div>
+                        </div>
+                        <div style="margin-top: 5px;">
+                            <table>
+                                <tr style="height: 20px;"></tr>
+                                <tr>
+                                    <td >
+                                        Score
+                                    </td>
+                                    <td id="scoreValue" >
+                                        0 
+                                    </td>
+                                </tr>
+                               
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div id="Settings" >
+                        <div style="margin-top: 5px;">
+                            <table>
+                                <tr>
+                                </tr>
+                                <tr>
+                                    <td><span>Sound</span></td>
+                                    <td>
+                                        <label class="switch">
+                                            <input id="soundOn" type="checkbox" >
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr style="height: 20px;"></tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button id = "btnNewGame" style="width: 100px;">New Game</button>
+                                    </td>
+                                    
+                                </tr>
+
+                                <tr style="height: 20px;"></tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <button id= "btnPauaseGame" style="width: 100px;">Pause Game</button>
+                                    </td>
+                                    
+                                </tr>
+
+                                <tr style="height: 20px;"></tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button id="btnAbout" style="width: 100px;" title="about">About</button>
+                                    </td>
+                                    
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div id="game_controls" style="margin-top: 10px;  border: solid steelblue 3px ;"> 
+               <button id ="btnLeft" class = "control-button" title="left">
+                    <span>
+                        <i class="fa-regular fa-square-caret-left " ></i>
+                    </span>
+               </button>
+               
+               <button id="btnDown" class = "control-button" title="down">
+                    <span >
+                        <i class="fa-regular fa-square-caret-down"></i>
+                    </span>
+                </button>
+                <button id="btnRight" class = "control-button" title="right">
+                    <span >
+                        <i class="fa-regular fa-square-caret-right"></i>
+                    </span>
+                </button>
+
+                <button  id="btnRotate" class = "control-button" title="rotate">
+                    <span>
+                        <i class="fa-solid fa-rotate"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <script type="module" src="bundle.js"></script>
+    </body>
+</html>
