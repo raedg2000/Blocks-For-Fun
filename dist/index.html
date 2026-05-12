@@ -14,7 +14,7 @@
         <img id="sapphire" src="./images/sapphire.png" hidden/>                  
         <dialog id="aboutDialog">
             <form method="dialog">
-                <h2>Blocks For Fun - Version : 0.01</h2>
+                <h2>Blocks For Fun - Version : 0.02</h2>
                 <br>
                 <p>
                     I developed this game for fun. It is inspired by the original falling-block puzzle format.
@@ -38,13 +38,13 @@
                     <p>Feel free to contact me on Linkedin.</p>
                 </p>
     
-                <divs style="display: flex; align-items: center;justify-content: center;">
-                    <button id="okBtn" value="Ok">OK</button>
+                <div class="center-actions">
+                    <button id="okBtn" type="submit" value="Ok">OK</button>
                 </div>
             </form>
         </dialog>
 
-        <audio id="victoerySound">
+        <audio id="victorySound">
             <source src="./sounds/victory.mp3" type="audio/mpeg" />
         </audio>
         <audio id="gameOverSound">
@@ -56,9 +56,9 @@
                 <p>
                     Would you like to end this game and start a new one?
                 </p>
-                <div style="display: flex; align-items: center;justify-content: center;">
-                    <button id="noBtn" value="No" style="margin: 10px;">No</button>
-                    <button id="yesBtn" value="Yes" style="margin: 10px;">Yes</button>
+                <div class="center-actions">
+                    <button id="noBtn" class="dialog-button" type="submit" value="No">No</button>
+                    <button id="yesBtn" class="dialog-button" type="submit" value="Yes">Yes</button>
                 </div>
             </form>
         </dialog>
@@ -78,9 +78,9 @@
                                 <canvas id="next_piece_canvas"></canvas>
                             </div>
                         </div>
-                        <div style="margin-top: 5px;">
+                        <div class="compact-section">
                             <table>
-                                <tr style="height: 20px;"></tr>
+                                <tr class="spacer-row"></tr>
                                 <tr>
                                     <td >
                                         Score
@@ -95,7 +95,7 @@
                     </div>
                     
                     <div id="Settings" >
-                        <div style="margin-top: 5px;">
+                        <div class="compact-section">
                             <table>
                                 <tr>
                                 </tr>
@@ -103,32 +103,32 @@
                                     <td><span>Sound</span></td>
                                     <td>
                                         <label class="switch">
-                                            <input id="soundOn" type="checkbox" >
+                                            <input id="soundOn" type="checkbox" aria-label="Sound" title="Sound" >
                                             <span class="slider round"></span>
                                         </label>
                                     </td>
                                 </tr>
-                                <tr style="height: 20px;"></tr>
+                                <tr class="spacer-row"></tr>
                                 <tr>
                                     <td colspan="2">
-                                        <button id = "btnNewGame" style="width: 100px;">New Game</button>
+                                        <button id = "btnNewGame" class="menu-button" type="button">New Game</button>
                                     </td>
                                     
                                 </tr>
 
-                                <tr style="height: 20px;"></tr>
+                                <tr class="spacer-row"></tr>
 
                                 <tr>
                                     <td colspan="2">
-                                        <button id= "btnPauaseGame" style="width: 100px;">Pause Game</button>
+                                        <button id="btnPauseGame" class="menu-button" type="button">Pause Game</button>
                                     </td>
                                     
                                 </tr>
 
-                                <tr style="height: 20px;"></tr>
+                                <tr class="spacer-row"></tr>
                                 <tr>
                                     <td colspan="2">
-                                        <button id="btnAbout" style="width: 100px;" title="about">About</button>
+                                        <button id="btnAbout" class="menu-button" type="button" title="about">About</button>
                                     </td>
                                     
                                 </tr>
@@ -138,25 +138,25 @@
                 </div>
                 
             </div>
-            <div id="game_controls" style="margin-top: 10px;  border: solid steelblue 3px ;"> 
-               <button id ="btnLeft" class = "control-button" title="left">
+                <div id="game_controls"> 
+                    <button id ="btnLeft" class = "control-button" type="button" title="left">
                     <span>
                         <i class="fa-regular fa-square-caret-left " ></i>
                     </span>
                </button>
                
-               <button id="btnDown" class = "control-button" title="down">
+               <button id="btnDown" class = "control-button" type="button" title="down">
                     <span >
                         <i class="fa-regular fa-square-caret-down"></i>
                     </span>
                 </button>
-                <button id="btnRight" class = "control-button" title="right">
+                <button id="btnRight" class = "control-button" type="button" title="right">
                     <span >
                         <i class="fa-regular fa-square-caret-right"></i>
                     </span>
                 </button>
 
-                <button  id="btnRotate" class = "control-button" title="rotate">
+                <button  id="btnRotate" class = "control-button" type="button" title="rotate">
                     <span>
                         <i class="fa-solid fa-rotate"></i>
                     </span>

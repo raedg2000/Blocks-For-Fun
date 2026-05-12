@@ -81,7 +81,7 @@ export class Block4 implements IBlock{
         if (this._angleOfRotation === 0 && (temp.row < Game.ROW_SIZE && this._game.matrix[temp.row][temp.column] === 0 ) &&
             (temp1.row < Game.ROW_SIZE && this._game.matrix[temp1.row][temp1.column] === 0 ) && 
             (temp2.row < Game.ROW_SIZE && this._game.matrix[temp2.row][temp2.column] === 0 ) &&
-            (temp2.row < Game.ROW_SIZE && this._game.matrix[temp3.row][temp3.column] === 0 )){
+            (temp3.row < Game.ROW_SIZE && this._game.matrix[temp3.row][temp3.column] === 0 )){
             return true;
         }
         if (this._angleOfRotation === 90 && (temp.row < Game.ROW_SIZE && 
@@ -142,7 +142,7 @@ export class Block4 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         let angle = this._angleOfRotation + 90;
         if (angle === 90){
             if (this._topLeft.row > 2 && 
@@ -240,7 +240,7 @@ export class Block4 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        if (this.canRoteate()){
+        if (this.canRotate()){
             this._angleOfRotation = this._angleOfRotation + 90;
 
             this.updateMatrix(0);

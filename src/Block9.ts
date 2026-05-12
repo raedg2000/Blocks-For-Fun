@@ -149,7 +149,7 @@ export class Block9 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         let angle = this._angleOfRotation + 90;
         if (angle === 90 && this._topRight.row > 0 && this._topRight.row + 2 < Game.ROW_SIZE &&
             this._game.matrix[this._topRight.row -1][this._topRight.column] === 0 &&
@@ -244,7 +244,7 @@ export class Block9 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        if (this.canRoteate()){
+        if (this.canRotate()){
             this._angleOfRotation = this._angleOfRotation + 90;
 
             this.updateMatrix(0);
@@ -283,7 +283,7 @@ export class Block9 implements IBlock{
         let position3 = new Position(position.column - 2, position.row + 1);
         this._block1.draw(nextItemCanvas, position);
         this._block2.draw(nextItemCanvas, position1);
-        this._block2.draw(nextItemCanvas, position2);
+        this._block3.draw(nextItemCanvas, position2);
         this._block4.draw(nextItemCanvas, position3);
     }
 }

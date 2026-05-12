@@ -56,6 +56,33 @@ body {
     margin: 20px;
 }
 
+.center-actions{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-button{
+  margin: 10px;
+}
+
+.compact-section{
+  margin-top: 5px;
+}
+
+.spacer-row{
+  height: 20px;
+}
+
+.menu-button{
+  width: 100px;
+}
+
+#game_controls{
+  margin-top: 10px;
+  border: solid steelblue 3px;
+}
+
 /* The switch - the box around the slider */
 .switch {
     position: relative;

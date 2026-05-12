@@ -83,7 +83,7 @@ export class Block1 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         return false;
     }
 

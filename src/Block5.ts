@@ -166,7 +166,7 @@ export class Block5 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         let angle = this._angleOfRotation + 90;
         if (angle === 90 && this._topLeft.row >= 0 && 
             this._game.matrix[this._topLeft.row + 1][this._topLeft.column] === 0){
@@ -257,7 +257,7 @@ export class Block5 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        if (this.canRoteate()){
+        if (this.canRotate()){
             this._angleOfRotation = this._angleOfRotation + 90;
 
             this.updateMatrix(0);

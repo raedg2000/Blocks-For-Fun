@@ -11,7 +11,7 @@ export interface IBlock{
 
     canPushDown():boolean;
 
-    canRoteate():boolean;
+    canRotate():boolean;
 
     moveDown():boolean;
 

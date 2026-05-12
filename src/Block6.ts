@@ -162,7 +162,7 @@ export class Block6 implements IBlock{
         if (this._angleOfRotation === 90 && temp.column  >= 0 && 
             this._game.matrix[temp.row][temp.column] === 0  && 
             this._game.matrix[temp2.row][temp2.column] === 0 && 
-            this._game.matrix[temp2.row][temp2.column] === 0){
+            this._game.matrix[temp3.row][temp3.column] === 0){
             return true;
         }
 
@@ -186,7 +186,7 @@ export class Block6 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         let col = Game.COL_SIZE;
         let angle = this._angleOfRotation + 90;
         if (angle === 90 && this._topLeft.row >= 1 && 
@@ -209,7 +209,7 @@ export class Block6 implements IBlock{
         else if (angle === 270 && this._topLeft.row >= 1 && this._topRight.row + 1 < Game.ROW_SIZE &&
             this._game.matrix[this._topLeft.row +1][this._topLeft.column] === 0  &&
             this._game.matrix[this._topMiddle.row +1][this._topMiddle.column] === 0  &&
-            this._game.matrix[this._topRight.row +1][this._topLeft.column] === 0  &&
+            this._game.matrix[this._topRight.row +1][this._topRight.column] === 0  &&
             this._game.matrix[this._topLeft.row -1][this._topLeft.column] === 0 ){
 
                 return true;
@@ -296,7 +296,7 @@ export class Block6 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        if (this.canRoteate()){
+        if (this.canRotate()){
             this._angleOfRotation = this._angleOfRotation + 90;
 
             this.updateMatrix(0);
@@ -348,7 +348,7 @@ export class Block6 implements IBlock{
         let position3 = new Position(position.column + 1, position.row + 1);
         this._block1.draw(nextItemCanvas, position);
         this._block2.draw(nextItemCanvas, position1);
-        this._block2.draw(nextItemCanvas, position2);
+        this._block3.draw(nextItemCanvas, position2);
         this._block4.draw(nextItemCanvas, position3);
     }
 }

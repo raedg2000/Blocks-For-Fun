@@ -124,9 +124,9 @@ export class Block8 implements IBlock{
 
     canMoveLeft(): boolean {
         let temp = new Position(this._topLeft.column - 1, this._topLeft.row);
-        let temp1 = new Position(this._bottomMiddle.column - 1, this._bottomRight.row);
-        let temp2 = new Position(this._topMiddle.column - 1, this._bottomRight.row);
-        let temp3 = new Position(this._bottomMiddle.column - 1, this._bottomRight.row);
+        let temp1 = new Position(this._bottomMiddle.column - 1, this._bottomMiddle.row);
+        let temp2 = new Position(this._topMiddle.column - 1, this._topMiddle.row);
+        let temp3 = new Position(this._bottomMiddle.column - 1, this._bottomMiddle.row);
        
         if (this._angleOfRotation === 0 && temp.row < Game.ROW_SIZE && temp.column  >= 0 && 
             this._game.matrix[temp.row][temp.column] === 0 && 
@@ -148,7 +148,7 @@ export class Block8 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         let angle = this._angleOfRotation + 90;
         if (angle === 90){
             if (this._topLeft.row > 0 && this._topLeft.row + 2 < Game.ROW_SIZE &&
@@ -243,7 +243,7 @@ export class Block8 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        if (this.canRoteate()){
+        if (this.canRotate()){
             this._angleOfRotation = this._angleOfRotation + 90;
 
             this.updateMatrix(0);
@@ -282,7 +282,7 @@ export class Block8 implements IBlock{
         let position3 = new Position(position.column + 2, position.row + 1);
         this._block1.draw(nextItemCanvas, position);
         this._block2.draw(nextItemCanvas, position1);
-        this._block2.draw(nextItemCanvas, position2);
+        this._block3.draw(nextItemCanvas, position2);
         this._block4.draw(nextItemCanvas, position3);
     }
 }

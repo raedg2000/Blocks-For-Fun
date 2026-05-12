@@ -15,7 +15,7 @@ import { IBlock } from "./IBlock";
 import { Position } from "./Position";
 
 
-enum BlockMovementEventTye{
+enum BlockMovementEventType{
     Down ='Down',
     Left = 'Left',
     Right = 'Right',
@@ -50,7 +50,7 @@ export class Game{
     private _blockTimerIntervalId: any | undefined;
     private _eventProcessingTimerIntervalId: any | undefined;
 
-    private _eventQueue = new Array<BlockMovementEventTye>();
+    private _eventQueue = new Array<BlockMovementEventType>();
 
     private _scoreCell : HTMLTableCellElement;
 
@@ -69,7 +69,7 @@ export class Game{
 
         this._scoreCell = document.getElementById('scoreValue') as HTMLTableCellElement;
         this.beepSoundPlayer = document.getElementById('beepSound') as HTMLAudioElement;
-        this.victorySoundPlayer = document.getElementById('victoerySound') as HTMLAudioElement;
+        this.victorySoundPlayer = document.getElementById('victorySound') as HTMLAudioElement;
         this.gameOverSoundPlayer = document.getElementById('gameOverSound') as HTMLAudioElement;
 
         this._soundOn = soundOption;
@@ -98,7 +98,17 @@ export class Game{
     }
 
     get matrix():Array<Array<number>>{
-        return this._matrix;
+        return new Proxy(this._matrix, {
+            get: (target, property, receiver) => {
+                if (typeof property === 'string'){
+                    let row = Number(property);
+                    if (Number.isInteger(row) && row < 0){
+                        return this.initialEmptyRow();
+                    }
+                }
+                return Reflect.get(target, property, receiver);
+            }
+        }) as Array<Array<number>>;
     }
 
     get hasEnded():boolean{
@@ -219,10 +229,6 @@ export class Game{
        return arr;
     }
 
-    private copyRowToAnotherRow(sourceRow: number, destinationRow : number){
-        this._matrix[destinationRow] = this._matrix[sourceRow];
-    }
-
     private returnFullRows():Array<number>{
         let completedRows = new Array<number>();
         for(let row = 0; row < Game.ROW_SIZE ; ++row){
@@ -257,21 +263,33 @@ export class Game{
     }
 
     private updateGameMatrix(numberOfCompletedRows: Array<number>){
-       
-        for(let index = 0; index < numberOfCompletedRows.length ; ++ index){
-            let destinationRow = numberOfCompletedRows[index];
-            
-            for (let sourceRow = destinationRow - 1 ; sourceRow >= 0; --sourceRow){
-                this.copyRowToAnotherRow(sourceRow, destinationRow);
-                --destinationRow;
+        if (numberOfCompletedRows.length === 0){
+            return;
+        }
+
+        let completedSet = new Set<number>(numberOfCompletedRows);
+        let preservedRows: Array<Array<number>> = [];
+        for (let row = 0; row < Game.ROW_SIZE; ++row){
+            if (!completedSet.has(row)){
+                preservedRows.push(this._matrix[row]);
             }
-            if (destinationRow === 0){
-                this._matrix[destinationRow] = this.initialEmptyRow();
-                if (this.soundOn){
-                    this.victorySoundPlayer.play();
-                }
-                this.updateGameScore();
-            }
+        }
+
+        let newMatrix: Array<Array<number>> = new Array<Array<number>>(Game.ROW_SIZE);
+        let clearedCount = numberOfCompletedRows.length;
+        for (let i = 0; i < clearedCount; ++i){
+            newMatrix[i] = this.initialEmptyRow();
+        }
+        for (let i = 0; i < preservedRows.length; ++i){
+            newMatrix[clearedCount + i] = preservedRows[i];
+        }
+        this._matrix = newMatrix;
+
+        if (this.soundOn){
+            this.victorySoundPlayer.play();
+        }
+        for (let i = 0; i < clearedCount; ++i){
+            this.updateGameScore();
         }
     }
 
@@ -307,7 +325,7 @@ export class Game{
             btnRight.addEventListener('click', (event)=>{
                 event.preventDefault();
                 event.stopPropagation();
-                this._eventQueue.push(BlockMovementEventTye.Right);
+                this._eventQueue.push(BlockMovementEventType.Right);
             })
         }
     }
@@ -318,7 +336,7 @@ export class Game{
             btnRotate.addEventListener('click', (event)=>{
                 event.preventDefault();
                 event.stopPropagation();
-                this._eventQueue.push(BlockMovementEventTye.Rotate);
+                this._eventQueue.push(BlockMovementEventType.Rotate);
             })
         }
     }
@@ -329,7 +347,7 @@ export class Game{
             btnDown.addEventListener('click', (event)=>{
                 event.preventDefault();
                 event.stopPropagation();
-                this._eventQueue.push(BlockMovementEventTye.Down);
+                this._eventQueue.push(BlockMovementEventType.Down);
             })
         }
 
@@ -341,18 +359,18 @@ export class Game{
             btnLeft.addEventListener('click', (event)=>{
                 event.preventDefault();
                 event.stopPropagation();
-                this._eventQueue.push(BlockMovementEventTye.Left);
+                this._eventQueue.push(BlockMovementEventType.Left);
             })
         }
     }
     
     private moveDownBlocks(game: Game){
         if (!game.hasEnded && !game.isPaused){
-            game._eventQueue.push(BlockMovementEventTye.Down);
+            game._eventQueue.push(BlockMovementEventType.Down);
         }
     }
 
-    private handleBlockEevnts(game: Game){
+    private handleBlockEvents(game: Game){
         if (game._hasEnded){
             return;
         }
@@ -360,10 +378,10 @@ export class Game{
             game.locked = true;
             if (game._eventQueue.length > 0 ){
                 if (game._currentBlock?.blocked){
-                    game._eventQueue = new Array<BlockMovementEventTye>();
+                    game._eventQueue = new Array<BlockMovementEventType>();
                     game._hasEnded = true;
-                    window.clearInterval(this._blockTimerIntervalId);
-                    window.clearInterval(this._eventProcessingTimerIntervalId);
+                    window.clearInterval(game._blockTimerIntervalId);
+                    window.clearInterval(game._eventProcessingTimerIntervalId);
                     game.printGameOver();
                     if (game.soundOn){
                         game.gameOverSoundPlayer.play();
@@ -371,17 +389,17 @@ export class Game{
                     return;
                 }
                 let event = game._eventQueue[0];
-                if (event === BlockMovementEventTye.Down){
+                if (event === BlockMovementEventType.Down){
                     if (!game._currentBlock?.canMoveDown() && !game._currentBlock?.blocked){
                         
-                        game._eventQueue = new Array<BlockMovementEventTye>();
+                        game._eventQueue = new Array<BlockMovementEventType>();
 
                         game.updateGame(game);
 
                         game.getNewBlock(); 
                         game.clearNextItemCanvas()
                         game._nextBlock?.drawOnNextItemCanvas();
-                        game._eventQueue.push(BlockMovementEventTye.Down);
+                        game._eventQueue.push(BlockMovementEventType.Down);
                     }
                     else{
                        
@@ -391,21 +409,21 @@ export class Game{
                         game._eventQueue.splice(0,1);
                     }
                 }
-                else if (event === BlockMovementEventTye.Left){
+                else if (event === BlockMovementEventType.Left){
                     // if (game.soundOn){
                     //     game.beepSoundPlayer.play();
                     // }
                     game._currentBlock?.moveLeft();
                     game._eventQueue.splice(0,1);
                 }
-                else if (event === BlockMovementEventTye.Right){
+                else if (event === BlockMovementEventType.Right){
                     // if (game.soundOn){
                     //     game.beepSoundPlayer.play();
                     // };
                     game._currentBlock?.moveRight();
                     game._eventQueue.splice(0,1);
                 }
-                else if (event === BlockMovementEventTye.Rotate){
+                else if (event === BlockMovementEventType.Rotate){
                     // if (game.soundOn){
                     //     game.beepSoundPlayer.play();
                     // };
@@ -421,10 +439,10 @@ export class Game{
         if (this._blockTimerIntervalId){
             window.clearInterval(this._blockTimerIntervalId);
         }
-        this._eventQueue.push(BlockMovementEventTye.Down);
+        this._eventQueue.push(BlockMovementEventType.Down);
         this._nextBlock?.drawOnNextItemCanvas();
         this._blockTimerIntervalId = window.setInterval(this.moveDownBlocks, this._speed, this);
-        this._eventProcessingTimerIntervalId = window.setInterval(this.handleBlockEevnts, 10, this);
+        this._eventProcessingTimerIntervalId = window.setInterval(this.handleBlockEvents, 10, this);
        
     }
 

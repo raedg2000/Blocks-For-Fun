@@ -13,7 +13,7 @@ export class Gameboard{
         this.setBlockSize();
         this.handleSoundOption();
         this.initializeGameCanvas();
-        this.initialzeNextBlockCanvas();
+        this.initializeNextBlockCanvas();
 
         this.handleNewGameEvent();
         this.handlePauseGameEvent();
@@ -55,7 +55,7 @@ export class Gameboard{
         }
     }
 
-    private initialzeNextBlockCanvas(){
+    private initializeNextBlockCanvas(){
         let element = document.getElementById("next_piece_canvas");
         if (element ){
             this._nextItemCanvas = element  as HTMLCanvasElement;
@@ -76,9 +76,10 @@ export class Gameboard{
     private newGame(){
         if (this._game && this._canvas && this._nextItemCanvas){
             this.initializeGameCanvas();
-            this.initialzeNextBlockCanvas();
+            this.initializeNextBlockCanvas();
             this._game?.endGame();
             this._game = new Game(this._canvas, this._nextItemCanvas, this.getSoundOnValue());
+            this.updatePauseButtonText("Pause Game");
             let scoreCell = document.getElementById('scoreValue') as HTMLTableCellElement;
             if (scoreCell){
                 scoreCell.innerText = `${this._game.score}`;
@@ -86,11 +87,20 @@ export class Gameboard{
         }
     }
 
+    private updatePauseButtonText(value: string){
+        let btnPauseGame = document.getElementById('btnPauseGame');
+        if (btnPauseGame !== null){
+            btnPauseGame.innerText = value;
+        }
+    }
+
     private handleSoundOption(){
         let soundOnControl = document.getElementById('soundOn') as HTMLInputElement;
         if (soundOnControl){
             soundOnControl.addEventListener('change', () =>{
-                this._game!.soundOn = soundOnControl.checked;
+                if (this._game){
+                    this._game.soundOn = soundOnControl.checked;
+                }
             });
         }
     }
@@ -119,7 +129,7 @@ export class Gameboard{
                             else{
                                 this._game!.isPaused = false;
                             }
-                        })
+                        }, { once: true })
                         dialog.showModal();
                         return;
                     }
@@ -129,22 +139,18 @@ export class Gameboard{
     }
 
     private handlePauseGameEvent(){
-        let btnPauaseGame = document.getElementById('btnPauaseGame');
-        if (btnPauaseGame !== null){
-            btnPauaseGame.addEventListener('click', (event) => {
+        let btnPauseGame = document.getElementById('btnPauseGame');
+        if (btnPauseGame !== null){
+            btnPauseGame.addEventListener('click', (event) => {
                 event.stopPropagation();
                 if (this._game && !this._game.hasEnded){
 
                     if (this._game.isPaused){
                         this._game.isPaused = false;
-                        if (btnPauaseGame !== null){
-                            btnPauaseGame.innerText = "Pause Game"
-                        }
+                        this.updatePauseButtonText("Pause Game");
                     }else{
                         this._game.isPaused = true;
-                        if (btnPauaseGame !== null){
-                            btnPauaseGame.innerText = "Continue"
-                        }
+                        this.updatePauseButtonText("Continue");
                     }
                 }
 
@@ -155,9 +161,9 @@ export class Gameboard{
     private handleAbout(){
         let btnAbout = document.getElementById('btnAbout');
         let aboutDialog = document.getElementById('aboutDialog') as HTMLDialogElement;
-        let btnPauaseGame = document.getElementById('btnPauaseGame');
+        let btnPauseGame = document.getElementById('btnPauseGame');
         aboutDialog.addEventListener('close', ()=>{
-            if (this._game && btnPauaseGame?.innerText !== "Continue"){
+            if (this._game && btnPauseGame?.innerText !== "Continue"){
                 this._game.isPaused = false;
             }           
         })

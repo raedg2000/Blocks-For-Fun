@@ -121,7 +121,7 @@ export class Block7 implements IBlock{
         return this.canMoveDown();
     }
 
-    canRoteate(): boolean {
+    canRotate(): boolean {
         return false;
     }
 
@@ -197,7 +197,7 @@ export class Block7 implements IBlock{
     }
 
     rotateCounterClockWise(): boolean {
-        return true;
+        return false;
     }
 
     drawOnNextItemCanvas(){
@@ -210,7 +210,7 @@ export class Block7 implements IBlock{
         let position3 = new Position(position.column + 1, position.row + 1);
         this._block1.draw(nextItemCanvas, position);
         this._block2.draw(nextItemCanvas, position1);
-        this._block2.draw(nextItemCanvas, position2);
+        this._block3.draw(nextItemCanvas, position2);
         this._block4.draw(nextItemCanvas, position3);
     }
 }
